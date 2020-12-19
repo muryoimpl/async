@@ -27,14 +27,16 @@ jobs:
             experimental: true
           - os: ubuntu
             ruby: jruby
-            env: JRUBY_OPTS="--debug -X+O"
+            env:
+              JRUBY_OPTS: "--debug -X+O"
             experimental: true
           - os: ubuntu
             ruby: head
             experimental: true
           - os: ubuntu
             ruby: 2.6
-            env: COVERAGE=PartialSummary,Coveralls
+            env:
+              COVERAGE: PartialSummary,Coveralls
             experimental: true
     
     steps:
@@ -46,9 +48,11 @@ jobs:
     
     - name: Run tests
       timeout-minutes: 5
-      run: ${{matrix.env}} bundle exec rspec
+      env: ${{matrix.env}}
+      run: bundle exec rspec
     
-    - name: Run external tests
-      timeout-minutes: 5
-      if: matrix.experimental == false && matrix.os == 'ubuntu'
-      run: ${{matrix.env}} bundle exec bake external
+        # - name: Run external tests
+        #   timeout-minutes: 5
+        #   if: matrix.experimental == false && matrix.os == 'ubuntu'
+        #   env: ${{matrix.env}}
+        #   run: bundle exec bake external
